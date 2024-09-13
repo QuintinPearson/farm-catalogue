@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= product.name %> - Product Details</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Product Details</h1>
+      <div class="product-details">
+        <h2><%= product.name %></h2>
+        <p>
+          <strong>Price:</strong>
+          <span class="price">$<%= product.price.toFixed(2) %></span>
+        </p>
+        <p>
+          <strong>Category:</strong>
+          <span class="category"><%= product.category %></span>
+        </p>
+        <p><strong>Description:</strong> No Description available.</p>
+        <a href="/products">Back to Products List</a>
+      </div>
+    </div>
+  </body>
+</html>
