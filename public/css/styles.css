@@ -14,6 +14,9 @@ h2,
 h3 {
   color: #2c3e50;
 }
+a {
+  text-decoration: none;
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -63,6 +66,14 @@ tr:nth-child(even) {
 .delete-btn {
   padding: 5px 10px;
   background-color: #e74c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.edit-btn {
+  padding: 5px 10px;
+  background-color: #f8e640;
   color: white;
   border: none;
   cursor: pointer;

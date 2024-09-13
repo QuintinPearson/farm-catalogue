@@ -17,10 +17,15 @@
         </p>
         <p>
           <strong>Category:</strong>
-          <span class="category"><%= product.category %></span>
+          <span class="category"
+            ><a href="/products?category=<%= product.category %>"
+              ><%= product.category %></a
+            ></span
+          >
         </p>
         <p><strong>Description:</strong> No Description available.</p>
         <a href="/products">Back to Products List</a>
+        <a href="/products/<%= product._id %>/edit">Edit Product</a>
       </div>
     </div>
   </body>

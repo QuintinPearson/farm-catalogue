@@ -61,7 +61,11 @@
   </head>
   <body>
     <div class="container">
-      <h1>Farm Products</h1>
+      <a href="/products"
+        ><h1 style="text-transform: capitalize">
+          <%= category !== undefined ? category : "Farm" %> Products
+        </h1></a
+      >
       <table>
         <thead>
           <tr>
@@ -76,7 +80,11 @@
           <tr class="clickable-row" data-href="/products/<%= product.id %>">
             <td><%= product.name %></td>
             <td class="price">$<%= product.price.toFixed(2) %></td>
-            <td class="category"><%= product.category %></td>
+            <td class="category">
+              <a href="/products?category=<%= product.category %>"
+                ><%= product.category %></a
+              >
+            </td>
             <td>
               <!-- Delete button -->
               <form
@@ -86,11 +94,16 @@
               >
                 <button type="submit" class="delete-btn">Delete</button>
               </form>
+              <br />
+              <a href="/products/<%= product.id %>/edit" class="edit-btn">
+                Edit
+              </a>
             </td>
           </tr>
           <% }) %>
         </tbody>
       </table>
+      <a href="/products/new">Create Product</a>
     </div>
     <script>
       // Add click event listener to all rows for navigation
