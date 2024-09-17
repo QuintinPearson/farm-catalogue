@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const Product = require("./models/product");
 const methodOverride = require("method-override");
+const Farm = require("./models/farm");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
@@ -11,6 +12,60 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
+
+// Farm Routes
+app.get("/farms", async (req, res) => {
+  const farms = await Farm.find({}).populate("products", "name");
+  res.render("farms/index", { farms });
+});
+
+app.get("/farms/new", (req, res) => {
+  res.render("farms/new");
+});
+
+app.get("/farms/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const farm = await Farm.findById(id).populate("products");
+    res.render("farms/details", { farm });
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+app.post("/farms", async (req, res) => {
+  const { name, location, email } = req.body;
+  const request = { name, location, email };
+  const newFarm = new Farm(request);
+  await newFarm.save();
+  res.redirect(`/farms/${newFarm._id}`);
+});
+
+app.get("/farms/:id/products/new", async (req, res) => {
+  const { id } = req.params;
+
+  const farm = await Farm.findById(id);
+  if (farm) {
+    res.render("products/new", { categories, farm_id: id });
+  }
+});
+
+app.post("/farms/:id/products", async (req, res) => {
+  const { id } = req.params;
+  const { name, price, category } = req.body;
+  const request = { name, price, category };
+  const farm = await Farm.findById(id).populate("products");
+  if (farm) {
+    request.farm = farm;
+  }
+  const product = new Product(request);
+  const newProduct = await product.save();
+  farm.products.push(newProduct);
+  await farm.save();
+  res.redirect(`/products/${newProduct._id}`);
+});
+
+// Product Routes
 
 const categories = ["dairy", "vegetable", "fruit", "other"];
 
@@ -64,7 +119,7 @@ app.patch("/products/:id", async (req, res) => {
 app.get("/products/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const product = await Product.findById(id);
+    const product = await Product.findById(id).populate("farm", "name");
     res.render("products/details", { product });
   } catch (e) {
     console.log(e);

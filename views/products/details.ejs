@@ -24,8 +24,20 @@
           >
         </p>
         <p><strong>Description:</strong> No Description available.</p>
-        <a href="/products">Back to Products List</a>
-        <a href="/products/<%= product._id %>/edit">Edit Product</a>
+        <div class="mb-3">
+          <% if (product.farm) { %>
+          <p>
+            <strong>Farm:</strong>
+            <span class="farm"
+              ><a href="/farms/<%= product.farm._id %>"
+                ><%= product.farm.name %></a
+              ></span
+            >
+          </p>
+          <% } %>
+          <a href="/products">Back to Products List</a>
+          <a href="/products/<%= product._id %>/edit">Edit Product</a>
+        </div>
       </div>
     </div>
   </body>
