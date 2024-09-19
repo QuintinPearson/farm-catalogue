@@ -5,18 +5,27 @@ const app = express();
 const Product = require("./models/product");
 const methodOverride = require("method-override");
 const Farm = require("./models/farm");
+const session = require("express-session");
+const flash = require("connect-flash");
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use(session({ secret: "secret", resave: false, saveUninitialized: false }));
+app.use(flash());
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+  res.locals.message = req.flash("success");
+  next();
+});
+
 // Farm Routes
 app.get("/farms", async (req, res) => {
   const farms = await Farm.find({}).populate("products", "name");
-  res.render("farms/index", { farms });
+  res.render("farms/index", { farms, message: req.flash("success") });
 });
 
 app.get("/farms/new", (req, res) => {
@@ -38,6 +47,9 @@ app.post("/farms", async (req, res) => {
   const request = { name, location, email };
   const newFarm = new Farm(request);
   await newFarm.save();
+
+  req.flash("success", "Farm added successfully");
+
   res.redirect(`/farms/${newFarm._id}`);
 });
 
